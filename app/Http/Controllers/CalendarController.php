@@ -64,6 +64,7 @@ class CalendarController extends Controller
             "start" => "required",
             "end" => "required",
             "name" => "required",
+            "type" => "required",
             "description" => "required",
             "places" => "required|integer",
             "class_id" => "required|integer",
@@ -76,6 +77,7 @@ class CalendarController extends Controller
             "name"=>$request->name,
             "description"=>$request->description,
             "places"=>$request->places,
+            "type"=>$request->type,
             "class_id"=>$request->class_id
         ]);
 

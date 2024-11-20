@@ -14,7 +14,8 @@ class Calendar extends Model
         "name",
         "description",
         "places",
-        "class_id"
+        "class_id",
+        "type"
     ];
 
     public function lessons (){

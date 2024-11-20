@@ -52,6 +52,13 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-6">
+                    <label for="type" class="block text-sm font-medium text-gray-700">in wish Classe you wanna add this course</label>
+                    <select class="w-full mt-2" name="type" id="">
+                            <option  value="free">Free</option>
+                            <option  value="payement">Payement</option>
+                    </select>
+                </div>
                 <button type="submit"
                     class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 focus:ring-4 focus:ring-blue-300">
                     Save Class
