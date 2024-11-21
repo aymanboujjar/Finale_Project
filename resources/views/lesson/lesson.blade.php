@@ -102,9 +102,9 @@
                         @method("PUT")
                         @csrf
                         <button 
-                            class="complete-btn px-4 py-2 w-full text-white font-semibold bg-blue-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none" 
+                            class="complete-btn px-4 py-2 w-full text-white font-semibold  {{ $isCompleted ? 'bg-green-700 '  : 'bg-blue-600 ' }} rounded-lg disabled:opacity-50 disabled:pointer-events-none" 
                             {{ $isCompleted ? 'disabled' : '' }}>
-                            {{ $isCompleted ? 'Completed' : 'Mark as Completed' }}
+                            {{ $isCompleted ? 'Completed'  : 'Mark as Completed' }}
                         </button>
                     </form>
                 </div>

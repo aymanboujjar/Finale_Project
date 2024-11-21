@@ -18,7 +18,11 @@
                 <div class="flex-shrink-0 flex items-center">
                     <h1 class="text-2xl font-extrabold text-blue-600">Learnova</h1>
                 </div>
-            
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="{{ url('/courses') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Courses</a>
+                    <a href="{{ url('/about') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">About Us</a>
+                    <a href="{{ url('/contact') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                </div>
                 <div class="flex items-center">
                     <div class="relative inline-block text-left">
                         <button 
@@ -52,77 +56,57 @@
     </nav>
     @endif
 
-    <!-- Hero Section -->
-    {{-- <section class="pt-24 bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-5xl font-extrabold text-white mb-4">Unlock Your Potential</h2>
-            <p class="text-xl text-gray-200 mb-6">Join thousands of learners from around the world in online courses.</p>
-            <a href="{{ url('/courses') }}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-md text-lg font-medium hover:bg-blue-700">Explore Courses</a>
+   
+
+  <!-- Courses Section -->
+<section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8 text-center">
+            <h3 class="text-3xl font-extrabold text-gray-800">Featured Courses</h3>
+            <p class="mt-4 text-gray-600">Enhance your skills with our expert-led courses.</p>
         </div>
-    </section> --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach ($courses as $course)
+            <div class="bg-gray-100 rounded-lg shadow-md overflow-hidden">
+                <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->name }}" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h4 class="text-xl font-semibold text-blue-600">{{ $course->name }}</h4>
+                    <p class="mt-2 text-gray-600">{{ Str::limit($course->description, 100) }}</p>
+                    <p class="mt-2 text-gray-600">Course type : {{ ($course->type) }}</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-sm text-gray-500">Available Places: {{ $course->places }}</span>
+
+                        <!-- Take it now button -->
+                        <form action="{{ route('course_user.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                            <input type="hidden"  name="calendar_id" value={{ $course->id }} >
+                            <button 
+                                id="take-now-{{ $course->id }}" 
+                                class="px-4 py-2 text-white font-medium rounded-lg bg-blue-500 hover:bg-blue-600 w-full flex justify-center items-center"
+                                onclick="handleTakeCourse({{ $course->id }}, '{{ $course->start }}', '{{ $course->end }}', {{ $course->places }})">
+                                Take it now
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+
     <!-- Calendar Section -->
-    <section class="py-12 bg-blue-50 mt-16">
+    <section class="py-12 bg-blue-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-8 text-center">
-                <h3 class="text-3xl font-extrabold text-gray-800">Courses Calendar</h3>
+                <h3 class="text-3xl font-extrabold text-gray-800">Your Calendar</h3>
                 <p class="mt-4 text-gray-600">Stay on top of your course schedules.</p>
             </div>
             <div class="w-full h-[90vh] bg-white rounded-3xl border-none p-3 shadow-md" id="calendar"></div>
         </div>
     </section>
-    <!-- Courses Section -->
-    <section class="py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-8 text-center">
-                <h3 class="text-3xl font-extrabold text-gray-800">Featured Courses</h3>
-                <p class="mt-4 text-gray-600">Enhance your skills with our expert-led courses.</p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach ($courses as $course)
-                <div class="bg-gray-100 rounded-lg shadow-md overflow-hidden">
-                    <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->name }}" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-semibold text-blue-600">{{ $course->name }}</h4>
-                        <p class="mt-2 text-gray-600">{{ Str::limit($course->description, 20) }}</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Available Places: {{ $course->places }}</span>
-                            <a href="#" 
-                               onclick="openCourseModal({{ $course->id }})" 
-                               class="px-4 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600">Take It Now</a>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-    {{-- <section class="py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-8 text-center">
-                <h3 class="text-3xl font-extrabold text-gray-800">Featured Classes</h3>
-                <p class="mt-4 text-gray-600">Enhance your skills with our expert-led courses.</p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach ($classes as $class)
-                <div class="bg-gray-100 rounded-lg shadow-md overflow-hidden">
-                    <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->name }}" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-semibold text-blue-600">{{ $class->name }}</h4>
-                        <p class="mt-2 text-gray-600">{{ Str::limit($class->description, 20) }}</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-sm text-gray-500">Available Places: {{ $class->places }}</span>
-                            <a href="#" 
-                               onclick="openclassModal({{ $class->id }})" 
-                               class="px-4 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600">Take It Now</a>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section> --}}
-
-
 
     <!-- Modal for Course Details -->
     <div id="showcourse" class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
@@ -189,41 +173,7 @@
             }
         };
 
-        function openCourseModal(courseId) {
-            // Fetch course details via AJAX and populate the modal
-            axios.get(`/courses/${courseId}`)
-                .then(response => {
-                    const course = response.data;
-                    document.getElementById('name').textContent = "Course Name: " + course.name;
-                    document.getElementById('description').textContent = "About the course: " + course.description;
-                    document.getElementById('place').textContent = "Places left: " + course.places;
-                    document.getElementById('time').textContent = "Start At: " + course.start;
-                    document.getElementById('time2').textContent = "End At: " + course.end;
-                    document.getElementById('calendar_id').value = course.id;
-
-                    const eventStartTime = new Date(course.start);
-                    const eventEndTime = new Date(course.end);
-                    const nowDate = new Date();
-                    const tranzabadan = document.getElementById('tranzabadan');
-
-                    if (eventStartTime <= nowDate && eventEndTime >= nowDate) {
-                        tranzabadan.textContent = "Take the course";
-                        tranzabadan.classList.remove('cursor-not-allowed', 'bg-green-500');
-                        tranzabadan.classList.add('bg-blue-500', 'hover:bg-blue-600');
-                        tranzabadan.type = "submit";
-                    } else {
-                        tranzabadan.textContent = "The course is not available";
-                        tranzabadan.classList.remove('bg-blue-500', 'hover:bg-blue-600');
-                        tranzabadan.classList.add('bg-green-500', 'cursor-not-allowed');
-                        tranzabadan.type = "button";
-                    }
-
-                    openModal('showcourse');
-                })
-                .catch(error => {
-                    console.error('Error fetching course details:', error);
-                });
-        }
+     
 
         document.addEventListener('DOMContentLoaded', async function() {
             let response = await axios.get("/calendar/create");
@@ -278,10 +228,41 @@
 
                     openModal('showcourse');
                 },
+                
+
             });
 
             calendar.render();
         });
+
+        function handleTakeCourse(courseId, startTime, endTime, availablePlaces) {
+        const button = document.getElementById(`take-now-${courseId}`);
+        const nowDate = new Date();
+        const courseStartTime = new Date(startTime);
+        const courseEndTime = new Date(endTime);
+
+        // Handle button text and state based on availability
+        if (courseStartTime <= nowDate && courseEndTime >= nowDate && availablePlaces > 0) {
+            // Course is available, allow enrollment
+            button.textContent = "Take the course";
+            button.classList.remove('cursor-not-allowed', 'bg-green-500');
+            button.classList.add('bg-blue-500', 'hover:bg-blue-600');
+            button.setAttribute('type', 'submit');  // Enable form submission
+        } else {
+            // Course is not available or no available places
+            button.textContent = "Not available";
+            button.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+            button.classList.add('bg-green-500', 'cursor-not-allowed');
+            button.setAttribute('type', 'button');  // Disable form submission
+        }
+    }
+
+    // To initialize the buttons when the page loads:
+    document.addEventListener('DOMContentLoaded', function () {
+        @foreach ($courses as $course)
+            handleTakeCourse({{ $course->id }}, '{{ $course->start }}', '{{ $course->end }}', {{ $course->places }});
+        @endforeach
+    });
     </script>
 </body>
 </html>

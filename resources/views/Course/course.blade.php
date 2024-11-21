@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Learnova</title>
+    <title>Learnova - Courses</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="icon" href={{ asset("storage/images/logo.png") }} type="image/x-icon">
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
@@ -55,17 +55,21 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6">
             @foreach ($user->courses as $item)
-            <div class="w-full bg-white rounded-lg shadow-lg overflow-hidden">
-                <div class="p-6">
-                    <h3 class="text-2xl font-bold text-blue-600">{{ $item->name }}</h3>
-                    <p class="text-gray-700 mt-4 text-sm">{{ $item->description }}</p>
+            <div class="w-full bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+                <div class="relative h-48 bg-cover bg-center" style="background-image: url('{{ asset('storage/' . $item->image) }}')">
+                    <div class="absolute inset-0 bg-black opacity-30"></div>
                 </div>
-                <div class="p-4 bg-blue-600 text-center">
-                    <button 
-                        class="px-6 py-2 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition"
-                        onclick="window.location.href='/lesson/show/{{ $item->id }}'">
-                        Show Lessons
-                    </button>
+                <div class="p-6">
+                    <h3 class="text-2xl font-semibold text-blue-600 mb-2">{{ $item->name }}</h3>
+                    <p class="text-gray-700 mt-4 text-sm mb-4">{{ Str::limit($item->description, 80) }}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500">Available Places: {{ $item->places }}</span>
+                        <button 
+                            class="px-6 py-2 text-white font-semibold rounded-lg shadow-md bg-blue-600 hover:bg-blue-700 transition-all"
+                            onclick="window.location.href='/lesson/show/{{ $item->id }}'">
+                            Show Lessons
+                        </button>
+                    </div>
                 </div>
             </div>
             @endforeach
