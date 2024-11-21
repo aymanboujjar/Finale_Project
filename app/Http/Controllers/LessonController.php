@@ -44,6 +44,7 @@ class LessonController extends Controller
             "description"=>$request->description,
             "places"=>$request->places,
             "calendar_id"=>$request->calendar_id,
+            "completed"=> false,
             "image"=>$file
         ]);
 
@@ -56,7 +57,7 @@ class LessonController extends Controller
     public function show(Lesson $lesson)
     {
         //
-        $courses = Calendar::where("id",$lesson->calendar_id)->first();
+        $courses = Calendar::where("id",$lesson->id)->first();
         // dd($courses);
         return view("lesson.lesson",compact("courses"));
     }
@@ -74,8 +75,15 @@ class LessonController extends Controller
      */
     public function update(Request $request, Lesson $lesson)
     {
-        //
+        $lesson->update([
+            'completed' => 'true',
+        ]);
+    
+        return response()->json(['message' => 'Lesson marked as completed.']);
     }
+    
+    
+    
 
     /**
      * Remove the specified resource from storage.

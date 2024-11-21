@@ -14,7 +14,7 @@
 
         <div class="px-6 py-4">
             <h1 class="text-center text-2xl font-bold mb-6">Create Your Course</h1>
-            <form method="post" action="{{ route('calendar.store') }}">
+            <form method="post" action="{{ route('calendar.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-4">
                     <label for="start" class="block text-sm font-medium text-gray-700">Start Date & Time</label>
@@ -45,10 +45,17 @@
                         required>
                 </div>
                 <div class="mb-6">
+                    <label for="image" class="block text-sm font-medium text-gray-700">lesson file</label>
+                    <input id="image" name="image" type="file"
+                        class="block mt-2 w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        required>
+                </div>
+                <div class="mb-6">
                     <label for="class" class="block text-sm font-medium text-gray-700">in wish Classe you wanna add this course</label>
                     <select class="w-full mt-2" name="class_id" id="">
                         @foreach ($classes as $item)
                             <option  value="{{ $item->id }}">{{ $item->name }}</option>
+                            
                         @endforeach
                     </select>
                 </div>

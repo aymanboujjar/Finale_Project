@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClasseController extends Controller
 {
@@ -39,6 +40,7 @@ class ClasseController extends Controller
             "name"=>$request->name,
             "description"=>$request->description,
             "places"=>$request->places,
+            "user_id"=>Auth::user()->id,
         ]);
         return back();
     }

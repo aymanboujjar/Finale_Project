@@ -15,11 +15,15 @@ class Calendar extends Model
         "description",
         "places",
         "class_id",
-        "type"
+        "type",
+        "image"
     ];
 
     public function lessons (){
         return $this->hasMany(Lesson::class);
+    }
+    public function class (){
+        return $this->belongsTo(Classe::class);
     }
     public function users (){
         return $this->belongsToMany(User::class , "course_lessons");

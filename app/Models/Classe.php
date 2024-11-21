@@ -11,7 +11,10 @@ class Classe extends Model
         "name",
         "description",
         "places",
-        
+        "user_id"
     
     ];
+    public function courses (){
+        return $this->hasMany(Calendar::class);
+    }
 }

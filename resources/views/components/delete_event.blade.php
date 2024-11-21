@@ -30,7 +30,7 @@
                     <button class="bg-red-500 px-5 py-2 text-white rounded-lg">Delete</button>
                 </form>
     
-                <a href="#" onclick="closeModal('modelConfirm')"
+                <a href="#" onclick="closeModal('deleteEvent    ')"
                     class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
                     data-modal-toggle="delete-user-modal">
                     No, cancel

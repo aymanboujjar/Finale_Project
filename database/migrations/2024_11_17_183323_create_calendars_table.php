@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();
             $table->string("name");
             $table->string("type");
+            $table->string("image");
             $table->string("description");
             $table->integer("places");
             $table->foreignId("class_id")->constrained()->cascadeOnDelete();

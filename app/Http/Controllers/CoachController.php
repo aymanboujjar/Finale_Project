@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Calendar;
 use App\Models\Classe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CoachController extends Controller
 {
@@ -13,12 +14,17 @@ class CoachController extends Controller
      */
     public function index()
     {
-        //
-        $classes = Classe::all();
-        $courses = Calendar::all();
-
-        return view("coaching.coaching",compact("classes","courses"));
+        $classes = Classe::where("user_id", Auth::user()->id)->get();
+        
+        $courses = collect();
+        
+        foreach ($classes as $key) {
+            $courses = $courses->merge(Calendar::where("class_id", $key->id)->get());
+        }
+    
+        return view("coaching.coaching", compact("classes", "courses"));
     }
+    
 
     /**
      * Show the form for creating a new resource.

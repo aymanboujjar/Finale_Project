@@ -33,8 +33,10 @@ Route::middleware('auth')->group(function () {
     Route::resource("lesson" , LessonController::class);
     Route::resource("course_user" , CourseLessonController::class);
     Route::put("/calendar/update/{calendar}" , [CalendarController::class , "update"])->name("updateCalendar");
+    Route::put("/lesson/update/{lesson}" , [LessonController::class , "update"]);
     Route::get("/lesson/show/{lesson}" , [LessonController::class , "show"])->name("lesson.showw");
     Route::delete("/calendar/delete/{calendar}" , [CalendarController::class , "destroy"])->name("deleteCalendar");
 });
 
 require __DIR__.'/auth.php';
+

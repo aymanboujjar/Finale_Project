@@ -12,7 +12,8 @@ class Lesson extends Model
         "description",
         "places",
         "image",
-        "calendar_id"
+        "calendar_id",
+        "completed"
 
     ];
     public function Course (){

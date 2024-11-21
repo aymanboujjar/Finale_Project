@@ -69,6 +69,7 @@ class CalendarController extends Controller
             "places" => "required|integer",
             "class_id" => "required|integer",
         ]);
+        $file = $request->file("image")->store("images", "public");
 
         Calendar::create([
             "start" => $request->start . ":00",
@@ -78,6 +79,7 @@ class CalendarController extends Controller
             "description"=>$request->description,
             "places"=>$request->places,
             "type"=>$request->type,
+            "image"=>$file,
             "class_id"=>$request->class_id
         ]);
 

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer("places");
             $table->string("image")->nullable();
             $table->foreignId("calendar_id")->constrained()->cascadeOnDelete();
+            $table->string("completed");
             $table->timestamps();
         });
     }
