@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string("name");
             $table->string("type");
             $table->string("image");
+            $table->boolean("is_complete")->default(false);
             $table->string("description");
             $table->integer("places");
             $table->foreignId("class_id")->constrained()->cascadeOnDelete();

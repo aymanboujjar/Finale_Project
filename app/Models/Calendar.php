@@ -16,7 +16,8 @@ class Calendar extends Model
         "places",
         "class_id",
         "type",
-        "image"
+        "image",
+        "is_complete",
     ];
 
     public function lessons (){

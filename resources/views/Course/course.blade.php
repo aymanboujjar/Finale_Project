@@ -9,7 +9,52 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 </head>
 <body class="bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500 min-h-screen font-sans text-gray-800">
+<!-- Success Message -->
+    <!-- Success Message -->
+    @if(session('success'))
+    <div class="alert alert-success fixed top-5 z-50 right-5 bg-green-600 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('success') }}
+    </div>
+    @endif
 
+    <!-- Error Message -->
+    @if(session('error'))
+    <div class="alert alert-danger fixed top-5 z-50 right-5 bg-red-600 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('error') }}
+    </div>
+    @endif
+
+    <!-- Warning Message -->
+    @if(session('warning'))
+    <div class="alert alert-warning fixed top-5 z-50 right-5 bg-yellow-500 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('warning') }}
+    </div>
+    @endif
+
+  
+
+    <!-- Your Navbar and other content here -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all flash messages
+            const flashMessages = document.querySelectorAll('.alert');
+
+            flashMessages.forEach(function (message) {
+                // Make the message visible by removing classes after a delay
+                setTimeout(() => {
+                    message.classList.remove('opacity-0', 'translate-x-full');
+                    message.classList.add('opacity-100', 'translate-x-0');
+                }, 100); // Slight delay before showing the message
+
+                // After 5 seconds, hide the message by adding opacity and translate classes
+                setTimeout(() => {
+                    message.classList.add('opacity-0', 'translate-x-full');
+                    message.classList.remove('opacity-100', 'translate-x-0');
+                }, 5000); // 5000 ms = 5 seconds
+            });
+        });
+    </script>
     <!-- Navbar -->
     @if (Route::has('login'))
     <nav class="w-full py-4 px-8 flex justify-between items-center bg-white shadow-lg rounded-b-lg">
@@ -31,7 +76,7 @@
                     <a href="{{ url('/profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
                     <a href="{{ url('/profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Courses</a>
                     @if (Auth::user() && Auth::user()->hasRole(['coach']))
-                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Coaching</a>
+                    <a href="{{ url('/coaching') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Coaching</a>
                     @endif
                     <form method="POST" action="{{ route('logout') }}" class="block">
                         @csrf

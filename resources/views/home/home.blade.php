@@ -8,8 +8,140 @@
     <link rel="icon" href="{{ asset('storage/images/logo.png') }}" type="image/x-icon">
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 </head>
-<body class="bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500 min-h-screen font-sans leading-relaxed text-gray-800">
+<style>
+    /* Override FullCalendar styles */
+        .fc {
+            font-family: 'Helvetica', sans-serif;
+        }
 
+        /* Calendar header - background and text color */
+        .fc-toolbar {
+            background: linear-gradient(to right, #4C9EFB, #6A67D5);  /* Gradient to match your theme */
+            color: white;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .fc-toolbar h2 {
+            color: white;  /* Header text color */
+        }
+
+        /* Navigation buttons (prev, next) */
+        .fc-button {
+            background-color: #4C9EFB; /* Blue background */
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .fc-button:hover {
+            background-color: #1D4ED8; /* Darker blue on hover */
+        }
+
+        /* Calendar date grid - Background and text colors */
+        .fc-daygrid-day {
+            background-color: #F0F4F8; /* Light background for each day */
+            color: #4B5563; /* Dark text */
+        }
+
+        /* Day cell hover effect */
+        .fc-daygrid-day:hover {
+            background-color: #E0E7FF; /* Light blue hover effect */
+        }
+
+        /* Current date highlight */
+        .fc-daygrid-day.fc-day-today {
+            background-color: #93C5FD; /* Light blue background for today */
+            color: white;
+        }
+
+        /* Event background color */
+        .fc-event {
+            background-color: #4C9EFB; /* Blue events */
+            color: white;
+            border-radius: 5px;
+        }
+
+        /* Event hover effect */
+        .fc-event:hover {
+            background-color: #1D4ED8; /* Darker blue when hovering over events */
+        }
+
+        /* Event text inside the events */
+        .fc-event .fc-title {
+            color: white; /* Event title text */
+        }
+
+        /* Selected date background color */
+        .fc-daygrid-day.fc-day-selected {
+            background-color: #6366F1; /* Purple for selected day */
+            color: white;
+        }
+
+        /* FullCalendar day view slots */
+        .fc-timegrid-slot {
+            background-color: #F3F4F6; /* Light grey slots */
+        }
+
+        .fc-timegrid-event {
+            background-color: #4C9EFB; /* Blue events */
+            color: white;
+        }
+
+        /* Make event times text white */
+        .fc-time {
+            color: white;
+        }
+
+</style>
+<body class="bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500 min-h-screen font-sans leading-relaxed text-gray-800">
+<!-- Success Message -->
+    <!-- Success Message -->
+    @if(session('success'))
+    <div class="alert alert-success fixed top-5 z-[1111111111] right-5 bg-green-600 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    <!-- Error Message -->
+    @if(session('error'))
+    <div class="alert alert-danger fixed top-5 z-50 right-5 bg-red-600 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('error') }}
+    </div>
+    @endif
+
+    <!-- Warning Message -->
+    @if(session('warning'))
+    <div class="alert alert-warning fixed top-5 z-50 right-5 bg-yellow-500 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('warning') }}
+    </div>
+    @endif
+
+  
+
+    <!-- Your Navbar and other content here -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all flash messages
+            const flashMessages = document.querySelectorAll('.alert');
+
+            flashMessages.forEach(function (message) {
+                // Make the message visible by removing classes after a delay
+                setTimeout(() => {
+                    message.classList.remove('opacity-0', 'translate-x-full');
+                    message.classList.add('opacity-100', 'translate-x-0');
+                }, 100); // Slight delay before showing the message
+
+                // After 5 seconds, hide the message by adding opacity and translate classes
+                setTimeout(() => {
+                    message.classList.add('opacity-0', 'translate-x-full');
+                    message.classList.remove('opacity-100', 'translate-x-0');
+                }, 5000); // 5000 ms = 5 seconds
+            });
+        });
+    </script>
     <!-- Navbar -->
     @if (Route::has('login'))
     <nav class="fixed top-0 w-full z-50 bg-white shadow-md">
@@ -18,11 +150,7 @@
                 <div class="flex-shrink-0 flex items-center">
                     <h1 class="text-2xl font-extrabold text-blue-600">Learnova</h1>
                 </div>
-                <div class="hidden md:flex space-x-8 items-center">
-                    <a href="{{ url('/courses') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Courses</a>
-                    <a href="{{ url('/about') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">About Us</a>
-                    <a href="{{ url('/contact') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
-                </div>
+              
                 <div class="flex items-center">
                     <div class="relative inline-block text-left">
                         <button 
@@ -59,7 +187,7 @@
    
 
   <!-- Courses Section -->
-<section class="py-12 bg-white">
+<section class="py-12 bg-white mt-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-8 text-center">
             <h3 class="text-3xl font-extrabold text-gray-800">Featured Courses</h3>
@@ -182,21 +310,21 @@
             var myCalendar = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(myCalendar, {
                 headerToolbar: {
-                    left: 'dayGridMonth,timeGridWeek,timeGridDay',
+                    left: '',
                     center: 'title',
-                    right: 'listMonth,listWeek,listDay'
+                    right: ''
                 },
                 views: {
-                    listDay: { buttonText: 'Day Events' },
-                    listWeek: { buttonText: 'Week Events' },
-                    listMonth: { buttonText: 'Month Events' },
-                    timeGridWeek: { buttonText: 'Week' },
-                    timeGridDay: { buttonText: "Day" },
-                    dayGridMonth: { buttonText: "Month" }
+                    // listDay: { buttonText: 'Day Events' },
+                    // listWeek: { buttonText: 'Week Events' },
+                    // listMonth: { buttonText: 'Month Events' },
+                    // timeGridWeek: { buttonText: 'Week' },
+                    // timeGridDay: { buttonText: "Day" },
+                    // dayGridMonth: { buttonText: "Month" }
                 },
                 initialView: "timeGridWeek",
                 slotMinTime: "04:00:00",
-                slotMaxTime: "19:00:00",
+                slotMaxTime: "23:00:00",
                 nowIndicator: true,
                 selectable: true,
                 events: events,

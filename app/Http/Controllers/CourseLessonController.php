@@ -65,13 +65,13 @@ class CourseLessonController extends Controller
                 "user_id"=>$request->user_id,
                 "calendar_id"=>$cal->id
             ]);
-            return redirect()->away($session->url);
+            return redirect()->away($session->url)->with('success', 'course tooked successfully!');
         }
         CourseLesson::create([
             "user_id"=>$request->user_id,
             "calendar_id"=>$request->calendar_id
         ]);
-        return back();
+        return back()->with('success', 'course tooked successfully!');
     }
 
     /**

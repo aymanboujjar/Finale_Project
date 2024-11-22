@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Calendar;
 use App\Models\Lesson;
+use App\Models\Projectfinale;
 use Illuminate\Http\Request;
 
 class LessonController extends Controller
@@ -48,7 +49,7 @@ class LessonController extends Controller
             "image"=>$file
         ]);
 
-        return back();
+        return back()->with('success', 'lesson created successfully!');
     }
 
     /**
@@ -57,9 +58,10 @@ class LessonController extends Controller
     public function show(Lesson $lesson)
     {
         //
+        $finalproject = Projectfinale::all();
         $courses = Calendar::where("id",$lesson->id)->first();
         // dd($courses);
-        return view("lesson.lesson",compact("courses"));
+        return view("lesson.lesson",compact("courses","finalproject"));
     }
 
     /**
@@ -79,8 +81,13 @@ class LessonController extends Controller
             'completed' => 'true',
         ]);
     
-        return response()->json(['message' => 'Lesson marked as completed.']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Lesson 
+             completed!',
+        ]);
     }
+    
     
     
     

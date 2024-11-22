@@ -5,6 +5,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\CourseLessonController;
+use App\Http\Controllers\FinalProjectController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
@@ -23,6 +24,8 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/profile_show', [HomeController::class, 'view'])->name('profile_show');
+    Route::get('/classe/{class}', [HomeController::class, 'class'])->name('class');
     Route::get('/coaching', [CoachController::class, 'index'])->name('coach')->middleware("role:coach,admin");
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -31,11 +34,14 @@ Route::middleware('auth')->group(function () {
     Route::resource("calendar" , CalendarController::class);
     Route::resource("class" , ClasseController::class);
     Route::resource("lesson" , LessonController::class);
+    Route::resource("final" , FinalProjectController::class);
     Route::resource("course_user" , CourseLessonController::class);
     Route::put("/calendar/update/{calendar}" , [CalendarController::class , "update"])->name("updateCalendar");
     Route::put("/lesson/update/{lesson}" , [LessonController::class , "update"]);
     Route::get("/lesson/show/{lesson}" , [LessonController::class , "show"])->name("lesson.showw");
     Route::delete("/calendar/delete/{calendar}" , [CalendarController::class , "destroy"])->name("deleteCalendar");
+    // Route::post('/final-project/submit', [FinalProjectController::class, 'submit'])->name('finalProject.submit');
+
 });
 
 require __DIR__.'/auth.php';

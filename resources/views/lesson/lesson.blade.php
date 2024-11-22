@@ -12,6 +12,50 @@
 
 <body class="bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500 min-h-screen font-sans leading-relaxed text-gray-800">
 
+    <!-- Success Message -->
+    @if(session('success'))
+    <div class="alert alert-success fixed top-5 z-50 right-5 bg-green-600 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    <!-- Error Message -->
+    @if(session('error'))
+    <div class="alert alert-danger fixed top-5 z-50 right-5 bg-red-600 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('error') }}
+    </div>
+    @endif
+
+    <!-- Warning Message -->
+    @if(session('warning'))
+    <div class="alert alert-warning fixed top-5 z-50 right-5 bg-yellow-500 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('warning') }}
+    </div>
+    @endif
+
+    <!-- Navbar and other content here -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all flash messages
+            const flashMessages = document.querySelectorAll('.alert');
+
+            flashMessages.forEach(function (message) {
+                // Make the message visible by removing classes after a delay
+                setTimeout(() => {
+                    message.classList.remove('opacity-0', 'translate-x-full');
+                    message.classList.add('opacity-100', 'translate-x-0');
+                }, 100); // Slight delay before showing the message
+
+                // After 5 seconds, hide the message by adding opacity and translate classes
+                setTimeout(() => {
+                    message.classList.add('opacity-0', 'translate-x-full');
+                    message.classList.remove('opacity-100', 'translate-x-0');
+                }, 5000); // 5000 ms = 5 seconds
+            });
+        });
+    </script>
+
     <!-- Navbar -->
     @if (Route::has('login'))
     <nav class="w-full py-4 px-8 flex justify-between items-center bg-white shadow-md rounded-b-lg">
@@ -109,9 +153,65 @@
                     </form>
                 </div>
             </div>
+            <div id="final-project-modal" class="fixed inset-0 z-50 hidden bg-gray-900 bg-opacity-50 flex items-center justify-center">
+                <div class="bg-white rounded-lg p-6 w-96">
+                    <h3 class="text-2xl font-bold text-blue-600">Final Project / Exam</h3>
+                    <p class="text-sm text-gray-600 mt-2">Answer the following questions to complete your course.</p>
+        
+                    <!-- Final Project Question 1 -->
+                    <form action="{{ route('final.store') }}" method="POST">
+                        @csrf
+                        <div class="mt-6">
+                            <h4 class="text-lg font-semibold text-gray-800">1. {{ $finalproject[0]->question }}</h4>
+                            <textarea  name="reponse1" 
+                                class="w-full p-3 mt-2 border border-gray-300 rounded-lg" 
+                                rows="5" 
+                                placeholder="Your answer here..."></textarea>
+                        </div>
+        
+                        <!-- Final Project Question 2 -->
+                        <div class="mt-6">
+                            <h4 class="text-lg font-semibold text-gray-800">2. {{ $finalproject[1]->question }}</h4>
+                            <textarea name="reponse2" 
+                                class="w-full p-3 mt-2 border border-gray-300 rounded-lg" 
+                                rows="5" 
+                                placeholder="Your answer here..."></textarea>
+                        </div>
+                        <div class="mt-6">
+                            <h4 class="text-lg font-semibold text-gray-800">3. {{ $finalproject[2]->question }}</h4>
+                            <textarea  name="reponse3"
+                                class="w-full p-3 mt-2 border border-gray-300 rounded-lg" 
+                                rows="5" 
+                                placeholder="Your answer here..."></textarea>
+                        </div>
+                        <input type="hidden" name="calendar_id" value="{{ $courses->id }}">
+                        <button type="submit">Done</button>
+                    </form>
+        
+                    <!-- Close Button -->
+                    <div class="mt-6 text-right">
+                        <button 
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg" 
+                            onclick="closeFinalProjectModal()">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
             @endforeach
+            <div id="final-project-button-container" class="text-center mt-10" style="display: none;">
+                <button 
+                    id="open-final-project-modal-btn" 
+                    class="px-6 py-3 w-full max-w-xs text-white font-semibold bg-green-700 rounded-lg"
+                    onclick="openFinalProjectModal()">
+                    Open Final Project
+                </button>
+            </div>
         </div>
     </div>
+
+    <!-- Final Project Modal (Initially Hidden) -->
+   
 
     <!-- Footer -->
     <footer class="bg-white shadow-md py-6 mt-12">
@@ -121,52 +221,85 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const lessons = document.querySelectorAll(".lesson");
-            const completeButtons = document.querySelectorAll(".complete-btn");
+       document.addEventListener("DOMContentLoaded", function () {
+    const lessons = document.querySelectorAll(".lesson");
+    const completeButtons = document.querySelectorAll(".complete-btn");
+    const finalProjectButton = document.getElementById('final-project-button-container');
+    
+    completeButtons.forEach((button, index) => {
+        button.addEventListener("click", function (e) {
+            e.preventDefault();
 
-            completeButtons.forEach((button, index) => {
-                button.addEventListener("click", function (e) {
-                    e.preventDefault(); // Prevent the form from reloading the page
+            const form = button.closest('form'); 
+            const url = form.action; 
+            const formData = new FormData(form);
 
-                    const form = button.closest('form'); // Get the parent form
-                    const url = form.action; // Get the form action URL
-                    const formData = new FormData(form);
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Show success message dynamically
+                    showFlashMessage(data.message, 'success');
 
-                    // Send AJAX request to the server
-                    fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        },
-                        body: formData,
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.message === 'Lesson marked as completed.') {
-                            // Mark the current lesson as completed
-                            lessons[index].classList.remove("opacity-50", "pointer-events-none");
-                            button.disabled = true;
+                    // Mark the lesson as completed visually
+                    lessons[index].classList.remove("opacity-50", "pointer-events-none");
+                    button.disabled = true;
 
-                            // Enable the next lesson
-                            if (index + 1 < lessons.length) {
-                                lessons[index + 1].classList.remove("opacity-50", "pointer-events-none");
-                                const nextButton = lessons[index + 1].querySelector(".complete-btn");
-                                if (nextButton) {
-                                    nextButton.disabled = false;
-                                }
-                            } else {
-                                alert("You have completed all the lessons!");
+                    // Show final project button if this was the last lesson
+                    if (index + 1 === lessons.length) {
+                        finalProjectButton.style.display = 'block'; // Unlock the final project button
+                    } else {
+                        // Enable the next lesson
+                        if (index + 1 < lessons.length) {
+                            lessons[index + 1].classList.remove("opacity-50", "pointer-events-none");
+                            const nextButton = lessons[index + 1].querySelector(".complete-btn");
+                            if (nextButton) {
+                                nextButton.disabled = false;
                             }
                         }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert("There was an error marking the lesson as completed.");
-                    });
-                });
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("There was an error marking the lesson as completed.");
             });
         });
+    });
+
+    function showFlashMessage(message, type) {
+        const flashMessage = document.createElement('div');
+        flashMessage.classList.add('alert', 'fixed', 'top-5', 'z-50', 'right-5', 'py-2', 'px-4', 'rounded-md', 'shadow-lg', 'transition-all', 'duration-500', 'opacity-0', 'translate-x-full', 'bg-green-600', 'text-white');
+        
+        flashMessage.textContent = message;
+        
+        document.body.appendChild(flashMessage);
+        
+        setTimeout(() => {
+            flashMessage.classList.remove('opacity-0', 'translate-x-full');
+            flashMessage.classList.add('opacity-100', 'translate-x-0');
+        }, 100);
+
+        setTimeout(() => {
+            flashMessage.classList.add('opacity-0', 'translate-x-full');
+            flashMessage.classList.remove('opacity-100', 'translate-x-0');
+        }, 5000); 
+    }
+});
+
+        function openFinalProjectModal() {
+            document.getElementById('final-project-modal').classList.remove('hidden');
+        }
+
+        function closeFinalProjectModal() {
+            document.getElementById('final-project-modal').classList.add('hidden');
+        }
     </script>
 
 </body>

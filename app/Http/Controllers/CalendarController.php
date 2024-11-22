@@ -37,7 +37,7 @@ class CalendarController extends Controller
                 "start" => $e->start,
                 "end" => $e->end,
                 "owner"=> $e->user_id,
-                "color" => "#fcc102",
+                "color" => "#007bff",
                 "passed" => false,
                 "title" => $user->name,
                 "name"=>$e->name,
@@ -83,7 +83,7 @@ class CalendarController extends Controller
             "class_id"=>$request->class_id
         ]);
 
-        return back();
+        return back()->with('success', 'course created successfully!');
     }
 
     /**
@@ -120,7 +120,7 @@ class CalendarController extends Controller
             "end" => $request->end
         ]);
 
-        return back();
+        return back()->with('success', 'course time updated successfully!');
         // dd("jkh");
     }
 
@@ -132,6 +132,6 @@ class CalendarController extends Controller
         //
 
         $calendar->delete();
-        return back();
+        return back()->with('success', 'course deleted successfully!');
     }
 }

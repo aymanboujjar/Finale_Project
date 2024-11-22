@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classe;
+use App\Models\Projectfinale;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class ClasseController extends Controller
+class ProjectfinaleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,6 @@ class ClasseController extends Controller
     public function index()
     {
         //
-        
     }
 
     /**
@@ -31,24 +29,12 @@ class ClasseController extends Controller
     public function store(Request $request)
     {
         //
-        request()->validate([
-            "name"=>"required",
-            "description"=>"required",
-            "places"=>"required|integer",
-        ]);
-        Classe::create([
-            "name"=>$request->name,
-            "description"=>$request->description,
-            "places"=>$request->places,
-            "user_id"=>Auth::user()->id,
-        ]);
-        return back()->with('success', 'classe created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Classe $classe)
+    public function show(Projectfinale $projectfinale)
     {
         //
     }
@@ -56,7 +42,7 @@ class ClasseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Classe $classe)
+    public function edit(Projectfinale $projectfinale)
     {
         //
     }
@@ -64,7 +50,7 @@ class ClasseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Classe $classe)
+    public function update(Request $request, Projectfinale $projectfinale)
     {
         //
     }
@@ -72,7 +58,7 @@ class ClasseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Classe $classe)
+    public function destroy(Projectfinale $projectfinale)
     {
         //
     }

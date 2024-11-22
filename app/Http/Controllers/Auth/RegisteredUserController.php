@@ -56,7 +56,7 @@ class RegisteredUserController extends Controller
 
         // Auth::login($user);
 
-        return redirect(route('home', absolute: false));
+        return redirect(route('home', absolute: false))->with('success', 'user created successfully!');
     }
 
 
@@ -71,13 +71,13 @@ public function approveUser(User $user)
 
     Mail::to($user->email)->send(new PasswordMailer($password));
 
-    return redirect()->back()->with('message', 'User approved and email sent.');
+    return redirect()->back()->with('success', 'User approved and email sent.');
 }
 public function switch (User  $user)
 {
     $adminRole = Role::where('name', 'coach')->first();
         $user->roles()->attach($adminRole);
      
-        return back();
+        return back()->with('success', 'user have set as a coach successfully!');
 }
 }

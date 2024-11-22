@@ -16,6 +16,52 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500 min-h-screen font-sans leading-relaxed text-gray-800">
+        <!-- Success Message -->
+    <!-- Success Message -->
+    @if(session('success'))
+    <div class="alert alert-success fixed top-5 z-50 right-5 bg-green-600 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    <!-- Error Message -->
+    @if(session('error'))
+    <div class="alert alert-danger fixed top-5 z-50 right-5 bg-red-600 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('error') }}
+    </div>
+    @endif
+
+    <!-- Warning Message -->
+    @if(session('warning'))
+    <div class="alert alert-warning fixed top-5 z-50 right-5 bg-yellow-500 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+        {{ session('warning') }}
+    </div>
+    @endif
+
+  
+
+    <!-- Your Navbar and other content here -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all flash messages
+            const flashMessages = document.querySelectorAll('.alert');
+
+            flashMessages.forEach(function (message) {
+                // Make the message visible by removing classes after a delay
+                setTimeout(() => {
+                    message.classList.remove('opacity-0', 'translate-x-full');
+                    message.classList.add('opacity-100', 'translate-x-0');
+                }, 100); // Slight delay before showing the message
+
+                // After 5 seconds, hide the message by adding opacity and translate classes
+                setTimeout(() => {
+                    message.classList.add('opacity-0', 'translate-x-full');
+                    message.classList.remove('opacity-100', 'translate-x-0');
+                }, 5000); // 5000 ms = 5 seconds
+            });
+        });
+    </script>
         <div class="bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500 min-h-screen font-sans leading-relaxed text-gray-800">
             @include('layouts.navigation')
 
