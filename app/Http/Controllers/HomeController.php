@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Calendar;
 use App\Models\Classe;
+use App\Models\CourseLesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,11 +16,20 @@ class HomeController extends Controller
         $classes = Classe::all();
         return view("home.home",compact("courses","classes"));
     }
-    public function view (){
-        $classes = Classe::where("user_id", Auth::user()->id)->get();
-        $courses = Calendar::where("user_id", Auth::user()->id)->get();
-        return view('profile_show',compact("courses","classes"));
+    public function view () {
+        $classes = CourseLesson::where("user_id", Auth::user()->id)->get();
+        
+        $allCourses = [];
+    
+        foreach ($classes as $key) {
+            $courses = Calendar::where("id", $key->calendar_id)->get();
+            
+            $allCourses[$key->id] = $courses;
+        }
+    
+        return view('profile_show', compact("allCourses", "classes"));
     }
+    
     public function class (Classe $class){
         $courses = Calendar::where("user_id", Auth::user()->id)->where("class_id",$class->id)->get();
         $classes = Classe::where("user_id", Auth::user()->id)->where("id",$class->id)->get();

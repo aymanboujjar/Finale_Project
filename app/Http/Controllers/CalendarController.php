@@ -39,7 +39,7 @@ class CalendarController extends Controller
                 "owner"=> $e->user_id,
                 "color" => "#007bff",
                 "passed" => false,
-                "title" => $user->name,
+                "title" => "Course : $e->name",
                 "name"=>$e->name,
                 "description"=>$e->description,
                 "places"=>$e->places,
@@ -110,6 +110,7 @@ class CalendarController extends Controller
     public function update(Request $request, Calendar $calendar)
     {
         //
+        // dd($request->all());
         $request->validate([
             "start" => "required",
             "end" => "required"
