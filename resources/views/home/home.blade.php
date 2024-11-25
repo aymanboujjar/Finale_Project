@@ -28,22 +28,29 @@
     </div>
     @endif
 
+   <!-- Mobile Menu Button -->
+   <button id="mobile-menu-button" class="md:hidden fixed top-4 right-4 z-50 bg-white p-2 rounded-lg shadow-md">
+    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"></path>
+    </svg>
+</button>
+
     <!-- Navbar -->
     @if (Route::has('login'))
-    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <nav class="fixed top-0 w-full z-40 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex-shrink-0 flex items-center">
                     <h1 class="text-2xl font-extrabold text-indigo-600">Learnova</h1>
                 </div>
-                <div class="hidden md:flex items-center space-x-8">
+                <div class="hidden lg:flex items-center space-x-8">
                     <a href="#" class="text-gray-600 hover:text-indigo-600">Home</a>
                     <a href="#" class="text-gray-600 hover:text-indigo-600">About Us</a>
                     <a href="#" class="text-gray-600 hover:text-indigo-600">Courses</a>
                     <a href="#" class="text-gray-600 hover:text-indigo-600">Blog</a>
                 </div>
-                <div class="flex items-center">
-                    <div class="relative inline-block text-left">
+                <div class="flex items-center space-x-4">
+                    <div class="relative hidden lg:block">
                         <button 
                             class="inline-flex items-center justify-center rounded-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             onclick="toggleDropdown()"
@@ -69,40 +76,45 @@
                             </div>
                         </div>
                     </div>
+                
                 </div>
             </div>
         </div>
     </nav>
     @endif
-
+ <!-- Mobile Menu -->
+ <div id="mobile-menu" class="fixed inset-0 bg-white z-40 transform translate-x-full transition-transform duration-300 md:hidden">
+    <div class="flex flex-col items-center mt-14 h-full space-y-6">
+        <div class="border-t border-gray-200 w-64 pt-6">
+            <a href="{{ url('/profile') }}" class="block text-center text-xl text-gray-600 hover:text-indigo-600 mb-4">Profile</a>
+            <a href="{{ url('/calendar') }}" class="block text-center text-xl text-gray-600 hover:text-indigo-600 mb-4">Courses</a>
+            @if (Auth::user() && Auth::user()->hasRole(['coach']))
+            <a href="{{ url('/coaching') }}" class="block text-center text-xl text-gray-600 hover:text-indigo-600 mb-4">Coaching</a>
+            @endif
+            <form method="POST" action="{{ route('logout') }}" class="block">
+                @csrf
+                <button type="submit" class="w-full text-center text-xl text-gray-600 hover:text-indigo-600">Log Out</button>
+            </form>
+        </div>
+    </div>
+</div>
     <!-- Hero Section -->
     <section class="pt-32 pb-20 px-4">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
-                    <h1 class="text-5xl font-bold text-gray-900 leading-tight mb-6">
+                    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
                         Welcome to the Best online platform for
                         <span class="bg-indigo-600 text-white px-4 py-1 rounded-lg inline-block mt-2">learning</span>
                     </h1>
-                    <p class="text-gray-600 text-lg mb-8">
+                    <p class="text-gray-600 text-base lg:text-lg mb-8">
                         Enhance your skills with our expert-led courses. Join our community of learners and achieve your goals with personalized learning paths.
                     </p>
-                    {{-- <div class="flex gap-4">
-                        <button class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
-                            Join for free
-                        </button>
-                        <button class="text-indigo-600 px-8 py-3 rounded-lg font-medium hover:bg-indigo-50 transition-colors flex items-center">
-                            Learn how
-                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                            </svg>
-                        </button>
-                    </div> --}}
                 </div>
                 <div class="relative">
                     <div class="absolute inset-0 bg-gradient-to-r from-indigo-200 to-blue-200 rounded-3xl transform rotate-6"></div>
                     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-<dotlottie-player src="https://lottie.host/95bddfca-2c64-4a61-8fe0-b8922fa0fe00/X699MnNCIJ.lottie" background="transparent" speed="1" style="width: 600px; height: 300px" loop autoplay></dotlottie-player>
+                    <dotlottie-player src="https://lottie.host/95bddfca-2c64-4a61-8fe0-b8922fa0fe00/X699MnNCIJ.lottie" background="transparent" speed="1" style="width: 100%; height: 300px" loop autoplay></dotlottie-player>
                 </div>
             </div>
         </div>
@@ -111,9 +123,9 @@
     <!-- Courses Section -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900">Featured Courses</h2>
-                <button class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 sm:mb-0">Featured Courses</h2>
+                <button class="w-full sm:w-auto bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
                     View all
                 </button>
             </div>
@@ -125,15 +137,15 @@
                         <h4 class="text-xl font-semibold text-gray-900">{{ $course->name }}</h4>
                         <p class="mt-2 text-gray-600">{{ Str::limit($course->description, 100) }}</p>
                         <p class="mt-2 text-gray-600">Course type: {{ ($course->type) }}</p>
-                        <div class="mt-4 flex justify-between items-center">
+                        <div class="mt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                             <span class="text-sm text-gray-500">Available Places: {{ $course->places }}</span>
-                            <form action="{{ route('course_user.store') }}" method="POST">
+                            <form action="{{ route('course_user.store') }}" method="POST" class="w-full sm:w-auto">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                 <input type="hidden" name="calendar_id" value={{ $course->id }}>
                                 <button 
                                     id="take-now-{{ $course->id }}" 
-                                    class="px-6 py-2 text-white font-medium rounded-lg bg-indigo-600 hover:bg-indigo-700 transition-colors">
+                                    class="w-full sm:w-auto px-6 py-2 text-white font-medium rounded-lg bg-indigo-600 hover:bg-indigo-700 transition-colors">
                                     Take it now
                                 </button>
                             </form>
@@ -146,19 +158,21 @@
     </section>
 
     <!-- Calendar Section -->
-    <section class="py-20 bg-gray-50">
+    <section class="py-12 md:py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-12 text-center">
-                <h3 class="text-3xl font-bold text-gray-900">Your Learning Schedule</h3>
-                <p class="mt-4 text-gray-600">Stay organized with your personalized course calendar</p>
+            <div class="mb-8 md:mb-12 text-center">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-900">Your Learning Schedule</h3>
+                <p class="mt-2 md:mt-4 text-sm md:text-base text-gray-600">Stay organized with your personalized course calendar</p>
             </div>
-            <div class="bg-white rounded-xl shadow-lg p-6" id="calendar"></div>
+            <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 overflow-x-auto">
+                <div id="calendar" class="min-w-[300px]"></div>
+            </div>
         </div>
     </section>
 
     <!-- Modal -->
     <div id="showcourse" class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
-        <div class="relative top-20 mx-auto shadow-xl rounded-xl bg-white max-w-lg">
+        <div class="relative top-20 mx-auto shadow-xl rounded-xl bg-white max-w-lg w-full">
             <div class="flex justify-end p-2">
                 <button onclick="closeModal('showcourse')" class="text-gray-400 hover:text-gray-600">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -194,9 +208,30 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script>
-        // Your existing JavaScript code remains the same
+          const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        let isMenuOpen = false;
+
+        mobileMenuButton.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('translate-x-full');
+                mobileMenuButton.innerHTML = `
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                `;
+            } else {
+                mobileMenu.classList.add('translate-x-full');
+                mobileMenuButton.innerHTML = `
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"></path>
+                    </svg>
+                `;
+            }
+        });
+
         function toggleDropdown() {
             const dropdown = document.getElementById('dropdown-menu');
             dropdown.classList.toggle('hidden');
@@ -204,24 +239,15 @@
 
         window.openModal = function(modalId) {
             document.getElementById(modalId).classList.remove('hidden');
-            document.body.classList.add('overflow-y-hidden');
+            document.body.classList.add('overflow-hidden');
         };
 
         window.closeModal = function(modalId) {
             document.getElementById(modalId).classList.add('hidden');
-            document.body.classList.remove('overflow-y-hidden');
+            document.body.classList.remove('overflow-hidden');
         };
 
-        document.onkeydown = function(event) {
-            event = event || window.event;
-            if (event.key === 'Escape') {
-                document.body.classList.remove('overflow-y-hidden');
-                let modals = document.querySelectorAll('.fixed');
-                modals.forEach(modal => {
-                    modal.classList.add('hidden');
-                });
-            }
-        };
+     
 
         document.addEventListener('DOMContentLoaded', async function() {
             let response = await axios.get("/calendar/create");
@@ -234,12 +260,20 @@
                     center: 'title',
                     right: ''
                 },
-                initialView: "timeGridWeek",
+                initialView: window.innerWidth < 768 ? "timeGridDay" : "timeGridWeek",
                 slotMinTime: "04:00:00",
                 slotMaxTime: "23:00:00",
                 nowIndicator: true,
                 selectable: true,
                 events: events,
+                height: 'auto',
+                windowResize: function(view) {
+                    if (window.innerWidth < 768) {
+                        calendar.changeView('timeGridDay');
+                    } else {
+                        calendar.changeView('timeGridWeek');
+                    }
+                },
                 eventClick: (info) => {
                     const a = info.event.extendedProps;
                     const eventStartTime = new Date(a.start_time);

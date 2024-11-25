@@ -16,19 +16,23 @@ class HomeController extends Controller
         $classes = Classe::all();
         return view("home.home",compact("courses","classes"));
     }
-    public function view () {
+    public function view() {
         $classes = CourseLesson::where("user_id", Auth::user()->id)->get();
-        
         $allCourses = [];
     
         foreach ($classes as $key) {
             $courses = Calendar::where("id", $key->calendar_id)->get();
-            
-            $allCourses[$key->id] = $courses;
+    
+            foreach ($courses as $course) {
+                $course->is_complete = $key->is_complete; 
+            }
+    
+            $allCourses[] = $courses;
         }
     
-        return view('profile_show', compact("allCourses", "classes"));
+        return view('profile_show', compact("allCourses"));
     }
+    
     
     public function class (Classe $class){
         $courses = Calendar::where("user_id", Auth::user()->id)->where("class_id",$class->id)->get();

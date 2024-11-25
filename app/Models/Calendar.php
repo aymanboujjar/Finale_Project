@@ -17,7 +17,7 @@ class Calendar extends Model
         "class_id",
         "type",
         "image",
-        "is_complete",
+        
     ];
 
     public function lessons (){
@@ -30,3 +30,4 @@ class Calendar extends Model
         return $this->belongsToMany(User::class , "course_lessons");
     }
 }
+

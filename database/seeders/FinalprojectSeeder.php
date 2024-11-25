@@ -26,34 +26,6 @@ class FinalprojectSeeder extends Seeder
                 "question" => "hello",
                 "reponse" => "hello"
             ],
-            [
-                "question" => "hello",
-                "reponse" => "hello"
-            ],
-            [
-                "question" => "hello",
-                "reponse" => "hello"
-            ],
-            [
-                "question" => "hello",
-                "reponse" => "hello"
-            ],
-            [
-                "question" => "hello",
-                "reponse" => "hello"
-            ],
-            [
-                "question" => "hello",
-                "reponse" => "hello"
-            ],
-            [
-                "question" => "hello",
-                "reponse" => "hello"
-            ],
-            [
-                "question" => "hello",
-                "reponse" => "hello"
-            ],
         ]);
     }
 }

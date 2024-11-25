@@ -31,48 +31,63 @@ class CourseLessonController extends Controller
      */
     public function store(Request $request)
     {
-        //
         request()->validate([
-            "user_id"=>"required",
-            "calendar_id"=>"required",
+            "user_id" => "required",
+            "calendar_id" => "required",
         ]);
-        // dd();
-        $cal = Calendar::where("id",$request->calendar_id)->first();
-        // dd($cal->type);
-        if ($cal->type == "payement") {
-            Stripe::setApiKey(config('stripe.sk'));
-        
-            $session = Session::create([
-                'line_items'  => [
-                    [
-                        'price_data' => [
-                            'currency'     => 'usd',
-                            'product_data' => [
-                                "name" => $cal->name ,
-                                "description"=> $cal->description,
-                            ],
-                            'unit_amount'  => 6900,
-                        ],
-                        'quantity'   => 1,
-                    ],
     
-                ],
-                'mode'        => 'payment', // the mode  of payment
-                'success_url' => route('home'), // route when success 
-                'cancel_url'  => route('home'), // route when  failed or canceled
-            ]);
+        $cal = Calendar::where("id", $request->calendar_id)->first();
+        if ($cal->places > 0) {
+            if ($cal->type == "payement") {
+                Stripe::setApiKey(config('stripe.sk'));
+                
+                // Create the Stripe session for payment
+                $session = Session::create([
+                    'line_items' => [
+                        [
+                            'price_data' => [
+                                'currency' => 'usd',
+                                'product_data' => [
+                                    "name" => $cal->name,
+                                    "description" => $cal->description,
+                                ],
+                                'unit_amount' => 6900, // amount in cents (e.g., 69.00 USD)
+                            ],
+                            'quantity' => 1,
+                        ],
+                    ],
+                    'mode' => 'payment',
+                    'success_url' => route('home'),
+                    'cancel_url' => route('home'),
+                ]);
+        
+                // Create the CourseLesson entry after the payment session is created
+                CourseLesson::create([
+                    "user_id" => $request->user_id,
+                    "calendar_id" => $cal->id,
+                ]);
+        
+                // Decrease the places available for the course by 1
+                $cal->places = $cal->places - 1;
+                $cal->save();
+        
+                // Redirect to the Stripe payment page
+                return redirect()->away($session->url)->with('success', 'Course booked successfully!');
+            }
+        
             CourseLesson::create([
-                "user_id"=>$request->user_id,
-                "calendar_id"=>$cal->id
+                "user_id" => $request->user_id,
+                "calendar_id" => $request->calendar_id,
             ]);
-            return redirect()->away($session->url)->with('success', 'course tooked successfully!');
+        
+            $cal->places = $cal->places - 1;
+            $cal->save();
+            return back()->with('success', 'Course booked successfully!');
+        }else {
+            return back()->with('error', 'No places available for this course.');
         }
-        CourseLesson::create([
-            "user_id"=>$request->user_id,
-            "calendar_id"=>$request->calendar_id
-        ]);
-        return back()->with('success', 'course tooked successfully!');
     }
+    
 
     /**
      * Display the specified resource.

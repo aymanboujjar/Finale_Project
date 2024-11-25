@@ -81,45 +81,38 @@
                 <h2 class="text-3xl font-bold text-gray-900">My Courses</h2>
                 <p class="mt-4 text-lg text-gray-600">Track your learning progress</p>
             </div>
-
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach ($allCourses as $item)
-                @foreach ($item as $course)
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
-                    <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->name }}" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-semibold text-indigo-600 mb-2">{{ $course->name }}</h4>
-                        <p class="text-gray-600 mb-4">{{ Str::limit($course->description, 100) }}</p>
-                        <p class="text-gray-600 mb-4">Course type: <span class="font-medium">{{ $course->type }}</span></p>
-                        
-                        @if ($course->is_complete)
-                            <button 
-                                type="button"
-                                class="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-medium cursor-default flex justify-center items-center"
-                            >
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                </svg>
-                                Course Completed
-                            </button>
-                        @else
-                            <a href="/lesson/show/{{ $course->id }}"
-                                type="button"
-                                class="w-full px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors flex justify-center items-center"
-                            >
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
-                                Continue Learning
-                            </a>
-                        @endif
-                    </div>
-                </div>
-                    
-                @endforeach
+                    @foreach ($item as $course)
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
+                            <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->name }}" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <h4 class="text-xl font-semibold text-indigo-600 mb-2">{{ $course->name }}</h4>
+                                <p class="text-gray-600 mb-4">{{ Str::limit($course->description, 100) }}</p>
+                                <p class="text-gray-600 mb-4">Course type: <span class="font-medium">{{ $course->type }}</span></p>
+            
+                                @if ($course->is_complete)  <!-- Use the added 'is_complete' -->
+                                    <button type="button" class="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-medium cursor-default flex justify-center items-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Course Completed
+                                    </button>
+                                @else
+                                    <a href="/lesson/show/{{ $course->id }}" type="button" class="w-full px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors flex justify-center items-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                        Continue Learning
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
                 @endforeach
             </div>
+            
         </div>
     </section>
 

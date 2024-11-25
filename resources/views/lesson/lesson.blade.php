@@ -17,13 +17,13 @@
     @endif
 
     @if(session('error'))
-    <div class="alert alert-danger fixed top-5 z-50 right-5 bg-red-600 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+    <div class="alert alert-danger fixed top-5 z-[1111111111] right-5 bg-red-600 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
         {{ session('error') }}
     </div>
     @endif
 
     @if(session('warning'))
-    <div class="alert alert-warning fixed top-5 z-50 right-5 bg-yellow-500 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
+    <div class="alert alert-warning fixed top-5 z-[1111111111] right-5 bg-yellow-500 text-white py-2 px-4 rounded-md shadow-lg opacity-0 translate-x-full transition-all duration-500">
         {{ session('warning') }}
     </div>
     @endif
@@ -80,7 +80,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Course Lessons</h2>
             <div id="lessons-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach ($courses->lessons as $index => $item)
+                @foreach ($calendar->lessons as $index => $item)
                 @php
                     $isCompleted = $item->completed === 'true';
                 @endphp
@@ -111,29 +111,13 @@
                         </div>
 
                         <!-- Complete Button -->
-                        <form action="/lesson/update/{{ $item->id }}" method="post">
-                            @method("PUT")
-                            @csrf
-                            <button class="complete-btn w-full px-6 py-3 rounded-lg font-medium transition-colors {{ $isCompleted ? 'bg-green-600 text-white cursor-not-allowed' : 'bg-indigo-600 text-white hover:bg-indigo-700' }}" {{ $isCompleted ? 'disabled' : '' }}>
-                                {{ $isCompleted ? 'Completed' : 'Mark as Completed' }}
-                            </button>
-                        </form>
+                        <button class="complete-btn w-full px-6 py-3 rounded-lg font-medium transition-colors bg-indigo-600 text-white hover:bg-indigo-700">
+                            Mark as Completed
+                        </button>
                     </div>
                 </div>
-                @endforeach
-            </div>
-
-            <!-- Final Project Button -->
-            <div id="final-project-button-container" class="text-center mt-10" style="display: none;">
-                <button onclick="openFinalProjectModal()" class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
-                    Start Final Project
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Final Project Modal -->
-    <div id="final-project-modal" class="fixed inset-0 z-50 hidden bg-gray-900/60 backdrop-blur-sm">
+                   <!-- Final Project Modal -->
+    <div id="final-project-modal" class="fixed justify-center inset-0 z-50 hidden bg-gray-900/60 backdrop-blur-sm">
         <div class="min-h-screen px-4 text-center">
             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -154,14 +138,14 @@
                         </div>
                         @endforeach
 
-                        <input type="hidden" name="calendar_id" value="{{ $courses->id }}">
-                        
-                        <div class="mt-8 flex justify-end space-x-4">
-                            <button type="button" onclick="closeFinalProjectModal()" class="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                                Cancel
+                        <input type="hidden" name="calendar_id" value="{{ $calendar->id }}">
+
+                        <div class="flex justify-center space-x-4">
+                            <button type="submit" class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                Submit
                             </button>
-                            <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
-                                Submit Project
+                            <button type="button" onclick="closeFinalProjectModal()" class="px-6 py-3 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors">
+                                Cancel
                             </button>
                         </div>
                     </form>
@@ -169,85 +153,63 @@
             </div>
         </div>
     </div>
+                @endforeach
+            </div>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="text-center">
-                <h1 class="text-2xl font-bold text-indigo-600 mb-4">Learnova</h1>
-                <p class="text-gray-600">&copy; 2024 Learnova. All rights reserved.</p>
+            <!-- Final Project Button -->
+            <div id="final-project-button-container" class="text-center mt-10" style="display: none;">
+                <button onclick="openFinalProjectModal()" class="px-8 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+                    Start Final Project
+                </button>
             </div>
         </div>
-    </footer>
+    </div>
+
+ 
 
     <script>
-        // Dropdown Toggle
+        // Show and hide the final project modal
         function toggleDropdown() {
             const dropdown = document.getElementById('dropdown-menu');
             dropdown.classList.toggle('hidden');
         }
+        function openFinalProjectModal() {
+            document.getElementById("final-project-modal").style.display = "flex";
+        }
+        function closeFinalProjectModal() {
+            document.getElementById("final-project-modal").style.display = "none";
+        }
 
-        // Flash Messages
-        document.addEventListener('DOMContentLoaded', function() {
-            const flashMessages = document.querySelectorAll('.alert');
-            
-            flashMessages.forEach(function(message) {
-                setTimeout(() => {
-                    message.classList.remove('opacity-0', 'translate-x-full');
-                    message.classList.add('opacity-100', 'translate-x-0');
-                }, 100);
-
-                setTimeout(() => {
-                    message.classList.add('opacity-0', 'translate-x-full');
-                    message.classList.remove('opacity-100', 'translate-x-0');
-                }, 5000);
-            });
-        });
-
-        // Lesson Completion
+        // Lesson Completion without using database (only using JavaScript)
         document.addEventListener("DOMContentLoaded", function() {
             const lessons = document.querySelectorAll(".lesson");
             const completeButtons = document.querySelectorAll(".complete-btn");
             const finalProjectButton = document.getElementById('final-project-button-container');
-            
+
             completeButtons.forEach((button, index) => {
                 button.addEventListener("click", function(e) {
                     e.preventDefault();
-                    const form = button.closest('form');
-                    const formData = new FormData(form);
 
-                    fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        },
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            showFlashMessage(data.message, 'success');
-                            button.textContent = 'Completed';
-                            button.disabled = true;
-                            button.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
-                            button.classList.add('bg-green-600', 'cursor-not-allowed');
+                    // Simulating the completion of the lesson in JavaScript
+                    button.textContent = 'Completed';
+                    button.disabled = true; // Disable the button
 
-                            if (index + 1 === lessons.length) {
-                                finalProjectButton.style.display = 'block';
-                            } else if (lessons[index + 1]) {
-                                lessons[index + 1].classList.remove("opacity-50", "pointer-events-none");
-                            }
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showFlashMessage('Error completing lesson', 'error');
-                    });
+                    // Change button styles
+                    button.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                    button.classList.add('bg-green-600', 'cursor-not-allowed');
+
+                    // Make the next lesson visible (if it exists)
+                    if (index + 1 < lessons.length) {
+                        lessons[index + 1].classList.remove("opacity-50", "pointer-events-none");
+                    }
+
+                    // If this is the last lesson, show the final project button
+                    if (index + 1 === lessons.length) {
+                        finalProjectButton.style.display = 'block';
+                    }
                 });
             });
         });
-
-        // Flash Message Helper
         function showFlashMessage(message, type) {
             const flashMessage = document.createElement('div');
             flashMessage.classList.add(
@@ -273,17 +235,21 @@
                 setTimeout(() => flashMessage.remove(), 500);
             }, 5000);
         }
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.alert');
+            
+            flashMessages.forEach(function(message) {
+                setTimeout(() => {
+                    message.classList.remove('opacity-0', 'translate-x-full');
+                    message.classList.add('opacity-100', 'translate-x-0');
+                }, 100);
 
-        // Final Project Modal
-        function openFinalProjectModal() {
-            document.getElementById('final-project-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeFinalProjectModal() {
-            document.getElementById('final-project-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
+                setTimeout(() => {
+                    message.classList.add('opacity-0', 'translate-x-full');
+                    message.classList.remove('opacity-100', 'translate-x-0');
+                }, 5000);
+            });
+        });
     </script>
 </body>
 </html>

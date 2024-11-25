@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calendar;
+use App\Models\Classe;
+use App\Models\Masterclasse;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 
-use function PHPSTORM_META\map;
-
-class CalendarController extends Controller
+class MasterclasseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +19,15 @@ class CalendarController extends Controller
     public function index()
     {
         //
-        $user = User::where("id",Auth::user()->id)->first();
-        return view('Course.course',compact("user"));
+        $classes = Classe::where("user_id", Auth::user()->id)->get();
+        
+        $courses = collect();
+        
+        foreach ($classes as $key) {
+            $courses = $courses->merge(Calendar::where("class_id", $key->id)->get());
+        }
+    
+        return view("Masterclasse", compact("classes", "courses"));
     }
 
     /**
@@ -27,8 +36,7 @@ class CalendarController extends Controller
     public function create()
     {
         //
-
-        $events = Calendar::all();
+        $events = Masterclasse::all();
 
         $events = $events->map(function ($e) {
             $user = User::where("id" , $e->user_id)->first();
@@ -38,8 +46,6 @@ class CalendarController extends Controller
                 "end" => $e->end,
                 "owner"=> $e->user_id,
                 "color" => "#007bff",
-                "textColor"=>"#000",
-                "borderColor"=> '#000',
                 "passed" => false,
                 "title" => "Course : $e->name",
                 "name"=>$e->name,
@@ -47,7 +53,6 @@ class CalendarController extends Controller
                 "places"=>$e->places,
                 "start_time" => $e->start,
                 "end_time" => $e->end,
-                
             ];
         });
 
@@ -67,42 +72,57 @@ class CalendarController extends Controller
             "start" => "required",
             "end" => "required",
             "name" => "required",
-            "type" => "required",
             "description" => "required",
             "places" => "required|integer",
-            "class_id" => "required|integer",
         ]);
         $file = $request->file("image")->store("images", "public");
+        Stripe::setApiKey(config('stripe.sk'));
+        
+        $session = Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            "name" => "LionsGeek Product",
+                            "description"=> "nyehehehehe"
+                        ],
+                        'unit_amount'  => 6900,
+                    ],
+                    'quantity'   => 2,
+                ],
 
-        Calendar::create([
+            ],
+            'mode'        => 'payment', // the mode  of payment
+            'success_url' => route('masterclasse.index'), // route when success 
+            'cancel_url'  => route('masterclasse.index'), // route when  failed or canceled
+        ]);
+
+        Masterclasse::create([
             "start" => $request->start . ":00",
             "end" => $request->end . ":00",
             "user_id" => Auth::user()->id,
             "name"=>$request->name,
             "description"=>$request->description,
             "places"=>$request->places,
-            "type"=>$request->type,
             "image"=>$file,
-            "class_id"=>$request->class_id
         ]);
+        return redirect()->away($session->url)->with('success', 'masterClasse created successfully!');
 
-        return back()->with('success', 'course created successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Calendar $calendar)
+    public function show(Masterclasse $masterclasse)
     {
         //
-
-
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Calendar $calendar)
+    public function edit(Masterclasse $masterclasse)
     {
         //
     }
@@ -110,32 +130,35 @@ class CalendarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Calendar $calendar)
+    public function update(Request $request, Masterclasse $masterclasse)
     {
         //
-        // dd($request->all());
-        $request->validate([
-            "start" => "required",
-            "end" => "required"
-        ]);
-
-        $calendar->update([
-            "start" => $request->start ,
-            "end" => $request->end
-        ]);
-
-        return back()->with('success', 'course time updated successfully!');
-        // dd("jkh");
+        {
+            //
+            // dd($request->all());
+            $request->validate([
+                "start" => "required",
+                "end" => "required"
+            ]);
+    
+            $masterclasse->update([
+                "start" => $request->start ,
+                "end" => $request->end
+            ]);
+    
+            return back()->with('success', 'course time updated successfully!');
+            // dd("jkh");
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Calendar $calendar)
+    public function destroy(Masterclasse $masterclasse)
     {
         //
-
-        $calendar->delete();
+        
+        $masterclasse->delete();
         return back()->with('success', 'course deleted successfully!');
     }
 }

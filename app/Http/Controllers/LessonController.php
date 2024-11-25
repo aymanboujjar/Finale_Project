@@ -6,6 +6,7 @@ use App\Models\Calendar;
 use App\Models\Lesson;
 use App\Models\Projectfinale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
@@ -46,7 +47,8 @@ class LessonController extends Controller
             "places"=>$request->places,
             "calendar_id"=>$request->calendar_id,
             "completed"=> false,
-            "image"=>$file
+            "image"=>$file,
+            // "user_id"=>Auth::user()->id,
         ]);
 
         return back()->with('success', 'lesson created successfully!');
@@ -59,9 +61,9 @@ class LessonController extends Controller
     {
         //
         $finalproject = Projectfinale::all();
-        $courses = Calendar::where("id",$lesson->id)->first();
+        $calendar = Calendar::where("id",$lesson->id)->first();
         // dd($courses);
-        return view("lesson.lesson",compact("courses","finalproject"));
+        return view("lesson.lesson",compact("calendar","finalproject"));
     }
 
     /**
@@ -77,9 +79,9 @@ class LessonController extends Controller
      */
     public function update(Request $request, Lesson $lesson)
     {
-        $lesson->update([
-            'completed' => 'true',
-        ]);
+        // $lesson->update([
+        //     'completed' => 'true',
+        // ]);
     
         return response()->json([
             'status' => 'success',

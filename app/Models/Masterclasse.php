@@ -4,20 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Lesson extends Model
+class Masterclasse extends Model
 {
     //
     protected $fillable = [
+        "start",
+        "end",
+        "user_id",
         "name",
         "description",
         "places",
         "image",
-        "calendar_id",
-        "completed",
-        // "user_id"
-
+        
     ];
-    public function Course (){
-        return $this->belongsTo(Calendar::class);
-    }
 }

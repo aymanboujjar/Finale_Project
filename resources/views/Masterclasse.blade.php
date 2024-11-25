@@ -45,24 +45,24 @@
                 </div>
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-4">
-                    <button id="class" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center" onclick="openModal('classmodal')">
+                    {{-- <button id="class" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center" onclick="openModal('classmodal')">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
                         Create Class
-                    </button>
-                    <button id="course" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center" onclick="openModal('coursemodal')">
+                    </button> --}}
+                    <button id="course" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center" onclick="openModal('masterclasse')">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
-                        Create Course
+                        Create Master Classe
                     </button>
-                    <button id="Lesson" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center" onclick="openModal('lessonsmodal')">
+                    {{-- <button id="Lesson" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center" onclick="openModal('lessonsmodal')">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
                         Create Lesson
-                    </button>
+                    </button> --}}
                     <div class="relative inline-block text-left">
                         <button class="inline-flex items-center justify-center rounded-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500" onclick="toggleDropdown()" id="menu-button" aria-expanded="false" aria-haspopup="true">
                             <span>{{ Auth::user()->name }}</span>
@@ -88,81 +88,6 @@
     </nav>
     @endif
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="fixed inset-0 bg-white z-40 transform translate-x-full transition-transform duration-300 md:hidden">
-        <div class="flex flex-col items-center justify-center h-full space-y-6">
-            <button onclick="openModal('classmodal')" class="text-xl bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors w-64">
-                Create Class
-            </button>
-            <button onclick="openModal('coursemodal')" class="text-xl bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors w-64">
-                Create Course
-            </button>
-            <button onclick="openModal('lessonsmodal')" class="text-xl bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors w-64">
-                Create Lesson
-            </button>
-            <div class="border-t border-gray-200 w-64 pt-6">
-                <a href="{{ url('/profile') }}" class="block text-center text-xl text-gray-600 hover:text-indigo-600 mb-4">Profile</a>
-                <a href="{{ url('/calendar') }}" class="block text-center text-xl text-gray-600 hover:text-indigo-600 mb-4">Courses</a>
-                @if (Auth::user() && Auth::user()->hasRole(['coach']))
-                <a href="{{ url('/coaching') }}" class="block text-center text-xl text-gray-600 hover:text-indigo-600 mb-4">Coaching</a>
-                @endif
-                <form method="POST" action="{{ route('logout') }}" class="block">
-                    @csrf
-                    <button type="submit" class="w-full text-center text-xl text-gray-600 hover:text-indigo-600">Log Out</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Welcome Section -->
-    <section class="pt-24 md:pt-32 pb-12 md:pb-20 px-4">
-        <div class="max-w-7xl mx-auto text-center">
-            <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6">Welcome to your coaching profile</h1>
-            <p class="text-lg md:text-xl text-gray-600 mb-8 md:mb-12">Manage your classes, courses, and schedule all in one place</p>
-        </div>
-    </section>
-
-    <!-- Quick Actions for Mobile -->
-    <section class="md:hidden px-4 mb-8">
-        <div class="grid grid-cols-2 gap-4">
-            <button onclick="openModal('classmodal')" class="bg-indigo-600 text-white p-4 rounded-lg text-center">
-                <svg class="w-6 h-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                </svg>
-                Create Class
-            </button>
-            <button onclick="openModal('coursemodal')" class="bg-indigo-600 text-white p-4 rounded-lg text-center">
-                <svg class="w-6 h-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                </svg>
-                Create Course
-            </button>
-        </div>
-    </section>
-
-    <!-- Classes Section -->
-    <section class="py-12 md:py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center mb-8 md:mb-12">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-900">My Classes</h2>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                @foreach ($classes as $class)
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow">
-                    <div class="p-4 md:p-6">
-                        <h4 class="text-lg md:text-xl font-semibold text-indigo-600">{{ $class->name }}</h4>
-                        <p class="mt-2 text-sm md:text-base text-gray-600">{{ Str::limit($class->description, 100) }}</p>
-                        <div class="mt-4 md:mt-6 flex justify-center">
-                            <a href="classe/{{ $class->id }}" class="w-full md:w-auto px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-center">
-                                View Class
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
 
     <!-- Calendar Section -->
     <section class="py-12 md:py-20 bg-gray-50">
@@ -187,9 +112,9 @@
 
     <!-- Include other components -->
     @include('components.delete_event')
-    @include('components.create_classe')
-    @include('components.create_courses')
-    @include('components.create_lessons')
+    {{-- @include('components.create_classe') --}}
+    {{-- @include('components.create_lessons') --}}
+    @include('components.create_masterclasse')
 
     <!-- Footer -->
     <footer class="bg-white border-t border-gray-100">
@@ -257,9 +182,10 @@
 
         // Calendar Setup
         document.addEventListener('DOMContentLoaded', async function() {
-            let response = await axios.get("/calendar/create");
+            let response = await axios.get("/masterclasse/create");
             let events = response.data.events;
-
+            console.log(response);
+            
             let nowDate = new Date();
             let day = nowDate.getDate();
             let month = nowDate.getMonth() + 1;
@@ -310,7 +236,7 @@
                 let eventEndTime = new Date(eventProps.end_time);
 
                 if (validateOwner(info)) {
-                    deleteEventForm.action = `/calendar/delete/${eventId}`;
+                    deleteEventForm.action = `/masterclasse/delete/${eventId}`;
                     deleteEventBtn.click();
                 } else {
                     show.click();
@@ -334,7 +260,7 @@
                 if (eventTime.start > nowDate && validateOwner(info)) {
                     updatedStart.value = formattedDate(eventTime.start);
                     updatedEnd.value = formattedDate(eventTime.end);
-                    updateForm.action = `/calendar/update/${eventInfo.publicId}`;
+                    updateForm.action = `/masterclasse/update/${eventInfo.publicId}`;
                     submitUpdate.click();
                 } else {
                     window.location.reload();

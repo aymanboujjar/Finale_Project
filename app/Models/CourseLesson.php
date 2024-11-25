@@ -9,7 +9,10 @@ class CourseLesson extends Model
     //
     protected $fillable = [
        "user_id",
+       "is_complete",
        "calendar_id"
 
     ];
+
+    
 }
