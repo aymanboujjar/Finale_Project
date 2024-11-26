@@ -15,17 +15,18 @@ class FinalprojectSeeder extends Seeder
         // Insert multiple records using the `insert` method
         Projectfinale::insert([
             [
-                "question" => "hello",
-                "reponse" => "hello"
+                "question" => "What is the correct syntax to declare a variable in PHP?",
+                "reponse" => "$ variable"
             ],
             [
-                "question" => "hello",
-                "reponse" => "hello"
+                "question" => "Which of the following is used to comment in PHP?",
+                "reponse" => "// or /* */"
             ],
             [
-                "question" => "hello",
-                "reponse" => "hello"
+                "question" => "What function is used to include a file in PHP?",
+                "reponse" => "include()"
             ],
         ]);
+        
     }
 }
