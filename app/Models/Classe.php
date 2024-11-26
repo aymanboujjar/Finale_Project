@@ -11,7 +11,8 @@ class Classe extends Model
         "name",
         "description",
         "places",
-        "user_id"
+        "user_id",
+        "image"
     
     ];
     public function courses (){

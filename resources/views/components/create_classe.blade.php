@@ -16,7 +16,7 @@
 
             <div>
                 <h1 class="text-center text-3xl font-semibold">Create your Class</h1>
-                <form action="{{ route('class.store') }}" method="post" class="max-w-4xl mx-auto  bg-white p-8 rounded-lg shadow-md">
+                <form action="{{ route('class.store') }}" method="post" class="max-w-4xl mx-auto  bg-white p-8 rounded-lg shadow-md" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-6">
                         <label for="name" class="block text-sm font-medium text-gray-700">Class Name</label>
@@ -53,7 +53,20 @@
                             required
                         />
                     </div>
-            
+                    <div class="mb-6">
+                        <label for="image" class="block text-sm font-medium text-gray-700">{{ __('Profile Image') }}</label>
+                        <div class="mt-1">
+                            <input 
+                                id="image" 
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" 
+                                type="file" 
+                                name="image" 
+                                required />
+                        </div>
+                        @error('image')
+                            <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="mb-6">
                         <button 
                             type="submit" 

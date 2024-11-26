@@ -149,6 +149,10 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 @foreach ($classes as $class)
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow">
+                    <div class="relative">
+                        <!-- Image of the class -->
+                        <img  src="{{ asset('storage/' . $class->image) }}" alt="Class image" class="w-full h-48 object-cover rounded-t-xl">
+                    </div>
                     <div class="p-4 md:p-6">
                         <h4 class="text-lg md:text-xl font-semibold text-indigo-600">{{ $class->name }}</h4>
                         <p class="mt-2 text-sm md:text-base text-gray-600">{{ Str::limit($class->description, 100) }}</p>
@@ -163,6 +167,7 @@
             </div>
         </div>
     </section>
+    
 
     <!-- Calendar Section -->
     <section class="py-12 md:py-20 bg-gray-50">

@@ -36,10 +36,13 @@ class ClasseController extends Controller
             "description"=>"required",
             "places"=>"required|integer",
         ]);
+        // dd($request->all());
+        $file = $request->file("image")->store("images", "public");
         Classe::create([
             "name"=>$request->name,
             "description"=>$request->description,
             "places"=>$request->places,
+            "image"=>$file,
             "user_id"=>Auth::user()->id,
         ]);
         return back()->with('success', 'classe created successfully!');
