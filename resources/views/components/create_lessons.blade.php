@@ -52,7 +52,7 @@
                 </div>
                 <button type="submit"
                     class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 focus:ring-4 focus:ring-blue-300">
-                    Save Class
+                    Save Lesson
                 </button>
             </form>
         </div>

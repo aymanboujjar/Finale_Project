@@ -54,7 +54,7 @@
                         />
                     </div>
                     <div class="mb-6">
-                        <label for="image" class="block text-sm font-medium text-gray-700">{{ __('Profile Image') }}</label>
+                        <label for="image" class="block text-sm font-medium text-gray-700">{{ __('Classe Image') }}</label>
                         <div class="mt-1">
                             <input 
                                 id="image" 

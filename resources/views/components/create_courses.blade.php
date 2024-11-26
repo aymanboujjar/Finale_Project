@@ -45,22 +45,22 @@
                         required>
                 </div>
                 <div class="mb-6">
-                    <label for="image" class="block text-sm font-medium text-gray-700">lesson file</label>
+                    <label for="image" class="block text-sm font-medium text-gray-700">course image</label>
                     <input id="image" name="image" type="file"
                         class="block mt-2 w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
                 <div class="mb-6">
-                    <label for="class" class="block text-sm font-medium text-gray-700">in wish Classe you wanna add this course</label>
+                    <label for="class" class="block text-sm font-medium text-gray-700">in wish classe you wanna add this course</label>
                     <select class="w-full mt-2" name="class_id" id="">
-                        @foreach ($classes as $item)
+                        @foreach ($courses as $item)
                             <option  value="{{ $item->id }}">{{ $item->name }}</option>
                             
                         @endforeach
                     </select>
                 </div>
                 <div class="mb-6">
-                    <label for="type" class="block text-sm font-medium text-gray-700">in wish Classe you wanna add this course</label>
+                    <label for="type" class="block text-sm font-medium text-gray-700">Select the course Type</label>
                     <select class="w-full mt-2" name="type" id="">
                             <option  value="free">Free</option>
                             <option  value="payement">Payement</option>
@@ -68,7 +68,7 @@
                 </div>
                 <button type="submit"
                     class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 focus:ring-4 focus:ring-blue-300">
-                    Save Class
+                    Save Course
                 </button>
             </form>
         </div>
