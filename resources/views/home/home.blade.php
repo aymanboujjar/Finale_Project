@@ -331,6 +331,7 @@
                 handleTakeCourse({{ $course->id }}, '{{ $course->start }}', '{{ $course->end }}', {{ $course->places }});
             @endforeach
         });
+        
     </script>
 </body>
 </html>

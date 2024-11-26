@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     //
     public function index (){
-        $courses = Calendar::all();
+        $courses = Calendar::latest()->take(3)->get();
         $classes = Classe::all();
         return view("home.home",compact("courses","classes"));
     }
